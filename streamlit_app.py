@@ -22,14 +22,23 @@ def create_la_geojson():
     return gj,test_df
 gj,test_df=create_la_geojson()
 
-english_prof_table=pd.read_csv('census_english_prof.csv')
-english_prof_table['Main_Language_English%']=(english_prof_table["MAIN_LANGUAGE_ENGLISH"]/english_prof_table['TOTAL_RESIDENTS'])*100
+@st.cache_data
+def create_english_prof_data():
+    
+    english_prof_table=pd.read_csv('census_english_prof.csv')
+    english_prof_table['Main_Language_English%']=(english_prof_table["MAIN_LANGUAGE_ENGLISH"]/english_prof_table['TOTAL_RESIDENTS'])*100
+    english_prof_table['Main_Language_not_English%']=(english_prof_table["MAIN_LANGAUGE_NOT_ENGLISH"]/english_prof_table['TOTAL_RESIDENTS'])*100
+    list_of_potential_metrics=[x for x in english_prof_table.columns if x not in ['DATE_CLMN','GEOGRAPHY','GEOGRAPHY_CODE']]
+    return english_prof_table,list_of_potential_metrics
+english_prof_table,english_prof_metrics=create_english_prof_data()
+metrics_dict={'English proficency':[english_prof_table,english_prof_metrics]}
+selected_dataset=st.selectbox('Please select the dataset you want to use',options=['English proficency'])
+metric_choice=st.selectbox('Please select Metric to Show',options=metrics_dict[selected_dataset][1])
 
-
-fig = px.choropleth_mapbox(english_prof_table,
+fig = px.choropleth_mapbox(metrics_dict[selected_dataset][0],
                            geojson=gj,
                            locations='GEOGRAPHY_CODE',
-                           color='Main_Language_English%',
+                           color=metric_choice,
                            featureidkey="properties.LAD21CD",
                            color_continuous_scale="Viridis",
                            mapbox_style="carto-positron",
