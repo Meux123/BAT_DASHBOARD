@@ -42,7 +42,7 @@ def create_raw_data_dataframes(variable_to_force_refresh):
 list_of_dashboards,dataframe_list,list_of_metric_columns,index_list=create_raw_data_dataframes(2)
 
 
-st.title("Local Authority Map")
+st.title("Local Authority Metric Map")
 
 
 with st.sidebar:
@@ -50,10 +50,10 @@ with st.sidebar:
     selected_dataset=st.selectbox('Please select the dataset you want to use',options=index_list,format_func=lambda x:list_of_dashboards[x])
     metric_choice=st.selectbox('Please select Metric to Show',options=list_of_metric_columns[selected_dataset])
     year_of_dataset=st.selectbox('Please Select which year of data to use',options=dataframe_list[selected_dataset]['DATE'])
-tab1,tab2=st.tabs(['Map','Other Graphs'])
+tab1=st.tabs(['Map'])
 with tab1:
     
-    st.write('test')
+
     # st.dataframe(dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['DATE']==year_of_dataset])
     fig = px.choropleth_mapbox(dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['DATE']==year_of_dataset],
                            geojson=gj,
