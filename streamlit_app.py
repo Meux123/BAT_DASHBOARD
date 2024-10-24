@@ -50,31 +50,30 @@ with st.sidebar:
     selected_dataset=st.selectbox('Please select the dataset you want to use',options=index_list,format_func=lambda x:list_of_dashboards[x])
     metric_choice=st.selectbox('Please select Metric to Show',options=list_of_metric_columns[selected_dataset])
     year_of_dataset=st.selectbox('Please Select which year of data to use',options=dataframe_list[selected_dataset]['DATE'])
-tab1=st.tabs(['Map'])
-with tab1:
-    
-
-    # st.dataframe(dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['DATE']==year_of_dataset])
-    fig = px.choropleth_mapbox(dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['DATE']==year_of_dataset],
-                           geojson=gj,
-                           locations='LA21_CD',
-                           color=metric_choice,
-                           featureidkey="properties.LAD21CD",
-                           color_continuous_scale="Viridis",
-                           mapbox_style="carto-positron",
-                           center={"lat": 55.09621, "lon": -4.0286298},
-                           zoom=4.2,
-                           
-                           hover_data=['LA21_CD','LA21_NAME']
-                           )
-
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
 
-    event_details=st.plotly_chart(fig,on_select='rerun')
-    
-    if len(event_details['selection']['points'])>0:
-        df_ind=dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['LA21_CD']==event_details['selection']['points'][0]['location']].transpose()
-        df_ind.columns=['Individual LA Details']
-        st.dataframe(df_ind,use_container_width=True)
+
+# st.dataframe(dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['DATE']==year_of_dataset])
+fig = px.choropleth_mapbox(dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['DATE']==year_of_dataset],
+                        geojson=gj,
+                        locations='LA21_CD',
+                        color=metric_choice,
+                        featureidkey="properties.LAD21CD",
+                        color_continuous_scale="Viridis",
+                        mapbox_style="carto-positron",
+                        center={"lat": 55.09621, "lon": -4.0286298},
+                        zoom=4.2,
+                        
+                        hover_data=['LA21_CD','LA21_NAME']
+                        )
+
+fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
+
+event_details=st.plotly_chart(fig,on_select='rerun')
+
+if len(event_details['selection']['points'])>0:
+    df_ind=dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['LA21_CD']==event_details['selection']['points'][0]['location']].transpose()
+    df_ind.columns=['Individual LA Details']
+    st.dataframe(df_ind,use_container_width=True)
 
