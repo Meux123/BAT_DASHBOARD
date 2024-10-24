@@ -43,27 +43,20 @@ def create_raw_data_dataframes(variable_to_force_refresh):
 
 list_of_dashboards,dataframe_list,list_of_metric_columns,index_list=create_raw_data_dataframes(1)
 
-@st.cache_data
-def create_english_prof_data():
-    
-    english_prof_table=pd.read_csv('census_english_prof.csv')
-    english_prof_table['Main_Language_English%']=(english_prof_table["MAIN_LANGUAGE_ENGLISH"]/english_prof_table['TOTAL_RESIDENTS'])*100
-    english_prof_table['Main_Language_not_English%']=(english_prof_table["MAIN_LANGAUGE_NOT_ENGLISH"]/english_prof_table['TOTAL_RESIDENTS'])*100
-    list_of_potential_metrics=[x for x in english_prof_table.columns if x not in ['DATE_CLMN','GEOGRAPHY','GEOGRAPHY_CODE']]
-    return english_prof_table,list_of_potential_metrics
 
 st.title("Local Authority Map")
 
-english_prof_table,english_prof_metrics=create_english_prof_data()
+
 with st.sidebar:
 
     selected_dataset=st.selectbox('Please select the dataset you want to use',options=index_list,format_func=lambda x:list_of_dashboards[x])
     metric_choice=st.selectbox('Please select Metric to Show',options=list_of_metric_columns[selected_dataset])
+    year_of_dataset=st.selectbox('Please Select which year of data to use',options=dataframe_list[selected_dataset]['DATE'])
 tab1,tab2=st.tabs(['Map','Other Graphs'])
 with tab1:
     
     
-    fig = px.choropleth_mapbox(dataframe_list[selected_dataset],
+    fig = px.choropleth_mapbox(dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['DATE']==year_of_dataset],
                            geojson=gj,
                            locations='GEOGRAPHY_CODE',
                            color=metric_choice,
@@ -79,4 +72,5 @@ with tab1:
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
 
-    st.plotly_chart(fig)
+    event_details=st.plotly_chart(fig,on_select='rerun')
+    st.write(event_details)
