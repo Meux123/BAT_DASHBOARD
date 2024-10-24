@@ -22,16 +22,19 @@ def create_la_geojson():
     return gj,test_df
 gj,test_df=create_la_geojson()
 
-fig = px.choropleth_mapbox(test_df,
+english_prof_table=pd.read_csv('census_english_prof.csv')
+
+
+fig = px.choropleth_mapbox(english_prof_table,
                            geojson=gj,
-                           locations='Local_Authority',
-                           color='Value',
-                           featureidkey="properties.LAD21NM",
+                           locations='GEOGRAPHY_CODE',
+                           color='MAIN_LANGUAGE_ENGLISH',
+                           featureidkey="properties.LAD21CD",
                            color_continuous_scale="Viridis",
                            mapbox_style="carto-positron",
                            center={"lat": 55.09621, "lon": -4.0286298},
                            zoom=4.2,
-                           labels={'val':'value'})
+                           labels={'val':'MAIN_LANGUAGE_ENGLISH'})
 
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
