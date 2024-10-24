@@ -34,11 +34,13 @@ def create_english_prof_data():
 st.title("Local Authority Map")
 
 english_prof_table,english_prof_metrics=create_english_prof_data()
-metrics_dict={'English proficency':[english_prof_table,english_prof_metrics]}
-selected_dataset=st.selectbox('Please select the dataset you want to use',options=['English proficency'])
-metric_choice=st.selectbox('Please select Metric to Show',options=metrics_dict[selected_dataset][1])
-
-fig = px.choropleth_mapbox(metrics_dict[selected_dataset][0],
+with st.sidebar:
+    metrics_dict={'English proficency':[english_prof_table,english_prof_metrics]}
+    selected_dataset=st.selectbox('Please select the dataset you want to use',options=['English proficency'])
+    metric_choice=st.selectbox('Please select Metric to Show',options=metrics_dict[selected_dataset][1])
+tab1,tab2=st.tabs(['Map','Other Graphs'])
+with tab1:
+    fig = px.choropleth_mapbox(metrics_dict[selected_dataset][0],
                            geojson=gj,
                            locations='GEOGRAPHY_CODE',
                            color=metric_choice,
@@ -51,7 +53,7 @@ fig = px.choropleth_mapbox(metrics_dict[selected_dataset][0],
                            hover_data=['GEOGRAPHY_CODE','GEOGRAPHY']
                            )
 
-fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
-st.title("Example Local Authority Map")
-st.plotly_chart(fig)
+
+    st.plotly_chart(fig)
