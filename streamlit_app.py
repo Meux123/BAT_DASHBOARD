@@ -30,6 +30,9 @@ def create_english_prof_data():
     english_prof_table['Main_Language_not_English%']=(english_prof_table["MAIN_LANGAUGE_NOT_ENGLISH"]/english_prof_table['TOTAL_RESIDENTS'])*100
     list_of_potential_metrics=[x for x in english_prof_table.columns if x not in ['DATE_CLMN','GEOGRAPHY','GEOGRAPHY_CODE']]
     return english_prof_table,list_of_potential_metrics
+
+st.title("Local Authority Map")
+
 english_prof_table,english_prof_metrics=create_english_prof_data()
 metrics_dict={'English proficency':[english_prof_table,english_prof_metrics]}
 selected_dataset=st.selectbox('Please select the dataset you want to use',options=['English proficency'])
