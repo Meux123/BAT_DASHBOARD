@@ -30,5 +30,5 @@
   "forwardPorts": [
     8501
   ],
-  "postCreateCommand": "pip3 install --user -r requirements.txt",
+  "postCreateCommand": "pip3 install --user -r requirements.txt"
 }
