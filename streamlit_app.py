@@ -26,7 +26,7 @@ def create_raw_data_dataframes(variable_to_force_refresh):
     list_of_files=os.listdir('data_for_dashboard')
     list_of_files_no_file_type=[x.split('.')[0] for x in list_of_files]
     dataframes_list=[]
-    non_metric_cols=['date','geography','geography_code']
+    non_metric_cols=['date','la21_name','la21_cd']
     list_of_metric_columns=[]
     index_list=[]
     for i in range(len(list_of_files)):
