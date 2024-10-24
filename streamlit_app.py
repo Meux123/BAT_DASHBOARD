@@ -63,7 +63,7 @@ with tab1:
                            color_continuous_scale="Viridis",
                            mapbox_style="carto-positron",
                            center={"lat": 55.09621, "lon": -4.0286298},
-                           zoom=4.2
+                           zoom=4.2,
                            
                            hover_data=['LA21_CD','LA21_NAME']
                            )
