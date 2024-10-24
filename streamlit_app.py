@@ -23,13 +23,13 @@ def create_la_geojson():
 gj,test_df=create_la_geojson()
 
 english_prof_table=pd.read_csv('census_english_prof.csv')
-english_prof_table['Main_Language_English%']=(english_prof_table["Main_Language_English"]/english_prof_table['TOTAL_RESIDENTS'])*100
+english_prof_table['Main_Language_English%']=(english_prof_table["MAIN_LANGUAGE_ENGLISH"]/english_prof_table['TOTAL_RESIDENTS'])*100
 
 
 fig = px.choropleth_mapbox(english_prof_table,
                            geojson=gj,
                            locations='GEOGRAPHY_CODE',
-                           color='MAIN_LANGUAGE_ENGLISH',
+                           color='Main_Language_English%',
                            featureidkey="properties.LAD21CD",
                            color_continuous_scale="Viridis",
                            mapbox_style="carto-positron",
