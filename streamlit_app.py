@@ -28,7 +28,7 @@ def create_raw_data_dataframes(variable_to_force_refresh):
     list_of_files=os.listdir('data_for_dashboard')
     list_of_files_no_file_type=[x.split('.')[0] for x in list_of_files]
     dataframes_list=[]
-    non_metric_cols=['date_clmn','geography','geography_code']
+    non_metric_cols=['date','geography','geography_code']
     list_of_metric_columns=[]
     index_list=[]
     for i in range(len(list_of_files)):
@@ -55,10 +55,10 @@ with st.sidebar:
 tab1,tab2=st.tabs(['Map','Other Graphs'])
 with tab1:
     
-    
+    st.write('test')
     fig = px.choropleth_mapbox(dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['DATE']==year_of_dataset],
                            geojson=gj,
-                           locations='GEOGRAPHY_CODE',
+                           locations='LA21_CD',
                            color=metric_choice,
                            featureidkey="properties.LAD21CD",
                            color_continuous_scale="Viridis",
@@ -66,7 +66,7 @@ with tab1:
                            center={"lat": 55.09621, "lon": -4.0286298},
                            zoom=4.2,
                            labels={'val':'TOTAL_RESIDENTS'},
-                           hover_data=['GEOGRAPHY_CODE','GEOGRAPHY']
+                           hover_data=['LA21_CD','LA21_NAME']
                            )
 
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
