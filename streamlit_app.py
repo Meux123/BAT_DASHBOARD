@@ -2,6 +2,7 @@ import streamlit as st
 import geojson
 import pandas as pd
 import plotly.express as px
+import os
 
 @st.cache_data
 def create_la_geojson():
@@ -23,6 +24,26 @@ def create_la_geojson():
 gj,test_df=create_la_geojson()
 
 @st.cache_data
+def create_raw_data_dataframes(variable_to_force_refresh):
+    list_of_files=os.listdir('data_for_dashboard')
+    list_of_files_no_file_type=[x.split('.')[0] for x in list_of_files]
+    dataframes_list=[]
+    non_metric_cols=['date_clmn','geography','geography_code']
+    list_of_metric_columns=[]
+    index_list=[]
+    for i in range(len(list_of_files)):
+        df=pd.read_csv(f'data_for_dashboard/{list_of_files[i]}')
+        metrics=[x for x in df.columns if x.lower() not in non_metric_cols]
+        dataframes_list.append(df)
+        list_of_metric_columns.append(metrics)
+        index_list.append(i)
+    return list_of_files_no_file_type,dataframes_list,list_of_metric_columns,index_list
+
+
+
+list_of_dashboards,dataframe_list,list_of_metric_columns,index_list=create_raw_data_dataframes(1)
+
+@st.cache_data
 def create_english_prof_data():
     
     english_prof_table=pd.read_csv('census_english_prof.csv')
@@ -35,12 +56,14 @@ st.title("Local Authority Map")
 
 english_prof_table,english_prof_metrics=create_english_prof_data()
 with st.sidebar:
-    metrics_dict={'English proficency':[english_prof_table,english_prof_metrics]}
-    selected_dataset=st.selectbox('Please select the dataset you want to use',options=['English proficency'])
-    metric_choice=st.selectbox('Please select Metric to Show',options=metrics_dict[selected_dataset][1])
+
+    selected_dataset=st.selectbox('Please select the dataset you want to use',options=index_list,format_func=lambda x:list_of_dashboards[x])
+    metric_choice=st.selectbox('Please select Metric to Show',options=list_of_metric_columns[selected_dataset])
 tab1,tab2=st.tabs(['Map','Other Graphs'])
 with tab1:
-    fig = px.choropleth_mapbox(metrics_dict[selected_dataset][0],
+    
+    
+    fig = px.choropleth_mapbox(dataframe_list[selected_dataset],
                            geojson=gj,
                            locations='GEOGRAPHY_CODE',
                            color=metric_choice,
