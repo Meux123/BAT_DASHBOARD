@@ -23,6 +23,7 @@ def create_la_geojson():
 gj,test_df=create_la_geojson()
 
 english_prof_table=pd.read_csv('census_english_prof.csv')
+english_prof_table['Main_Language_English%']=(english_prof_table["Main_Language_English"]/english_prof_table['TOTAL_RESIDENTS'])*100
 
 
 fig = px.choropleth_mapbox(english_prof_table,
@@ -34,7 +35,9 @@ fig = px.choropleth_mapbox(english_prof_table,
                            mapbox_style="carto-positron",
                            center={"lat": 55.09621, "lon": -4.0286298},
                            zoom=4.2,
-                           labels={'val':'MAIN_LANGUAGE_ENGLISH'})
+                           labels={'val':'TOTAL_RESIDENTS'},
+                           hoverdata=['GEOGRAPHY_CODE']
+                           )
 
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
