@@ -65,7 +65,7 @@ with tab1:
                            center={"lat": 55.09621, "lon": -4.0286298},
                            zoom=4.2
                            
-                        #    hover_data=['LA21_CD','LA21_NAME']
+                           hover_data=['LA21_CD','LA21_NAME']
                            )
 
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
