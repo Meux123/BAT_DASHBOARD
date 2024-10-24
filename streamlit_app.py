@@ -17,10 +17,8 @@ def create_la_geojson():
         gj["features"][i]['id'] = la
         # While I'm at it, append local authority name to a list to make some dummy data to test, along with i for a value to test on map
         example_la_data.append([la,i])
-    
-    test_df=pd.DataFrame(example_la_data)
-    test_df.columns=['Local_Authority','Value']
-    return gj,test_df
+
+    return gj
 gj,test_df=create_la_geojson()
 
 @st.cache_data
@@ -41,7 +39,7 @@ def create_raw_data_dataframes(variable_to_force_refresh):
 
 
 
-list_of_dashboards,dataframe_list,list_of_metric_columns,index_list=create_raw_data_dataframes(1)
+list_of_dashboards,dataframe_list,list_of_metric_columns,index_list=create_raw_data_dataframes(10)
 
 
 st.title("Local Authority Map")
@@ -56,6 +54,7 @@ tab1,tab2=st.tabs(['Map','Other Graphs'])
 with tab1:
     
     st.write('test')
+    # st.dataframe(dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['DATE']==year_of_dataset])
     fig = px.choropleth_mapbox(dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['DATE']==year_of_dataset],
                            geojson=gj,
                            locations='LA21_CD',
@@ -64,13 +63,13 @@ with tab1:
                            color_continuous_scale="Viridis",
                            mapbox_style="carto-positron",
                            center={"lat": 55.09621, "lon": -4.0286298},
-                           zoom=4.2,
-                           labels={'val':'TOTAL_RESIDENTS'},
-                           hover_data=['LA21_CD','LA21_NAME']
+                           zoom=4.2
+                           
+                        #    hover_data=['LA21_CD','LA21_NAME']
                            )
 
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
 
-    event_details=st.plotly_chart(fig,on_select='rerun')
-    st.write(event_details)
+    # st.plotly_chart(fig)
+    # st.write(event_details)
