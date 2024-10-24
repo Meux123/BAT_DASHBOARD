@@ -39,7 +39,7 @@ def create_raw_data_dataframes(variable_to_force_refresh):
 
 
 
-list_of_dashboards,dataframe_list,list_of_metric_columns,index_list=create_raw_data_dataframes(2)
+list_of_dashboards,dataframe_list,list_of_metric_columns,index_list=create_raw_data_dataframes(3)
 
 
 st.title("Local Authority Metric Map")
