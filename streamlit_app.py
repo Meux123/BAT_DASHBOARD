@@ -19,7 +19,7 @@ def create_la_geojson():
         example_la_data.append([la,i])
 
     return gj
-gj,test_df=create_la_geojson()
+gj=create_la_geojson()
 
 @st.cache_data
 def create_raw_data_dataframes(variable_to_force_refresh):
