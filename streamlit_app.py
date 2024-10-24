@@ -36,7 +36,7 @@ fig = px.choropleth_mapbox(english_prof_table,
                            center={"lat": 55.09621, "lon": -4.0286298},
                            zoom=4.2,
                            labels={'val':'TOTAL_RESIDENTS'},
-                           hover_data=['GEOGRAPHY_CODE']
+                           hover_data=['GEOGRAPHY_CODE','GEOGRAPHY']
                            )
 
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
