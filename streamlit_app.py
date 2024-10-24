@@ -39,7 +39,7 @@ def create_raw_data_dataframes(variable_to_force_refresh):
 
 
 
-list_of_dashboards,dataframe_list,list_of_metric_columns,index_list=create_raw_data_dataframes(10)
+list_of_dashboards,dataframe_list,list_of_metric_columns,index_list=create_raw_data_dataframes(2)
 
 
 st.title("Local Authority Map")
@@ -71,5 +71,10 @@ with tab1:
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
 
-    # st.plotly_chart(fig)
-    # st.write(event_details)
+    event_details=st.plotly_chart(fig,on_select='rerun')
+    
+    if len(event_details['selection']['points'])>0:
+        df_ind=dataframe_list[selected_dataset].loc[dataframe_list[selected_dataset]['LA21_CD']==event_details['selection']['points'][0]['location']].transpose()
+        df_ind.columns=['Individual LA Details']
+        st.dataframe(df_ind,use_container_width=True)
+
